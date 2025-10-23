@@ -1,114 +1,106 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
-namespace DaraGPT
+namespace DaraGPT;
+
+public class WikipediaTrainer
 {
-    public class WikipediaTrainer
+    private readonly Config cfg;
+    private readonly HttpClient http;
+    private readonly HashSet<string> visited = new();
+
+    public WikipediaTrainer(Config cfg)
     {
-        private readonly Config cfg;
-        private readonly HashSet<string> visited = new();
-        private readonly HttpClient http;
+        this.cfg = cfg;
+        http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; DaraGPT/1.0)");
+    }
 
-        public WikipediaTrainer(Config cfg)
+    public async Task DownloadWikipediaAsync(int maxPages)
+    {
+        var startUrl = "https://sh.wikipedia.org/wiki/Glavna_strana";
+        Queue<string> toVisit = new();
+        toVisit.Enqueue(startUrl);
+
+        var pagesDownloaded = 0;
+        var dataDir = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+        Directory.CreateDirectory(dataDir);
+
+        Console.WriteLine($"Počinjem preuzimanje Wikipedia stranica (do {maxPages})...");
+
+        while (toVisit.Count > 0 && pagesDownloaded < maxPages)
         {
-            this.cfg = cfg;
-            http = new HttpClient();
-            http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; DaraGPT/1.0)");
-        }
+            var url = toVisit.Dequeue();
+            if (visited.Contains(url)) continue;
+            visited.Add(url);
 
-        public async Task DownloadWikipediaAsync(int maxPages)
-        {
-            string startUrl = "https://sh.wikipedia.org/wiki/Glavna_strana";
-            Queue<string> toVisit = new();
-            toVisit.Enqueue(startUrl);
+            Console.WriteLine($"\n[{pagesDownloaded + 1}/{maxPages}] Preuzimam: {url}");
 
-            int pagesDownloaded = 0;
-            string dataDir = Path.Combine(Directory.GetCurrentDirectory(), "Data");
-            Directory.CreateDirectory(dataDir);
-
-            Console.WriteLine($"Počinjem preuzimanje Wikipedia stranica (do {maxPages})...");
-
-            while (toVisit.Count > 0 && pagesDownloaded < maxPages)
+            try
             {
-                string url = toVisit.Dequeue();
-                if (visited.Contains(url)) continue;
-                visited.Add(url);
+                var html = await http.GetStringAsync(url);
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
 
-                Console.WriteLine($"\n[{pagesDownloaded + 1}/{maxPages}] Preuzimam: {url}");
-
-                try
+                // Uzmemo <p> tagove (glavni tekst)
+                var paragraphs = doc.DocumentNode.SelectNodes("//p");
+                if (paragraphs == null)
                 {
-                    string html = await http.GetStringAsync(url);
-                    var doc = new HtmlDocument();
-                    doc.LoadHtml(html);
-
-                    // Uzmemo <p> tagove (glavni tekst)
-                    var paragraphs = doc.DocumentNode.SelectNodes("//p");
-                    if (paragraphs == null)
-                    {
-                        Console.WriteLine("Preskačem (nema paragrafa).");
-                        continue;
-                    }
-
-                    string text = string.Join(" ", paragraphs.Select(p => p.InnerText));
-
-                    // Čišćenje teksta
-                    text = Regex.Replace(text, @"\[\d+\]", "");             // [1]
-                    text = Regex.Replace(text, @"\s+", " ").Trim();         // višestruki razmaci
-                    text = Regex.Replace(text, @"[^\wčćžšđČĆŽŠĐ\s\.,!?-]", ""); // ostavi samo slova, interpunkciju i brojke
-
-                    if (text.Length < 150)
-                    {
-                        Console.WriteLine("Preskačem (tekst prekratak).");
-                        continue;
-                    }
-
-                    // Kreiraj ime fajla
-                    string safeName = url.Split('/').LastOrDefault() ?? $"page_{pagesDownloaded + 1}";
-                    safeName = Regex.Replace(safeName, @"[^\w\-]", "_");
-                    string filePath = Path.Combine(dataDir, $"{safeName}.txt");
-
-                    await File.WriteAllTextAsync(filePath, text);
-                    Console.WriteLine($"✅ Sačuvano: {filePath} ({text.Length} karaktera)");
-
-                    pagesDownloaded++;
-
-                    // Dodaj linkove za sledeće posete
-                    var links = doc.DocumentNode.SelectNodes("//a[@href]")
-                        ?.Select(a => a.GetAttributeValue("href", ""))
-                        .Where(h => h.StartsWith("/wiki/") && !h.Contains(":"))
-                        .Select(h => "https://sh.wikipedia.org" + h)
-                        .Distinct()
-                        .Take(15)
-                        .ToList();
-
-                    if (links != null)
-                    {
-                        int dodato = 0;
-                        foreach (var link in links)
-                        {
-                            if (!visited.Contains(link))
-                            {
-                                toVisit.Enqueue(link);
-                                dodato++;
-                            }
-                        }
-                        Console.WriteLine($"Dodato {dodato} novih linkova ({toVisit.Count} u redu).");
-                    }
+                    Console.WriteLine("Preskačem (nema paragrafa).");
+                    continue;
                 }
-                catch (Exception ex)
+
+                var text = string.Join(" ", paragraphs.Select(p => p.InnerText));
+
+                // Čišćenje teksta
+                text = Regex.Replace(text, @"\[\d+\]", ""); // [1]
+                text = Regex.Replace(text, @"\s+", " ").Trim(); // višestruki razmaci
+                text = Regex.Replace(text, @"[^\wčćžšđČĆŽŠĐ\s\.,!?-]", ""); // ostavi samo slova, interpunkciju i brojke
+
+                if (text.Length < 150)
                 {
-                    Console.WriteLine($" Greška pri obradi {url}: {ex.Message}");
+                    Console.WriteLine("Preskačem (tekst prekratak).");
+                    continue;
+                }
+
+                // Kreiraj ime fajla
+                var safeName = url.Split('/').LastOrDefault() ?? $"page_{pagesDownloaded + 1}";
+                safeName = Regex.Replace(safeName, @"[^\w\-]", "_");
+                var filePath = Path.Combine(dataDir, $"{safeName}.txt");
+
+                await File.WriteAllTextAsync(filePath, text);
+                Console.WriteLine($"✅ Sačuvano: {filePath} ({text.Length} karaktera)");
+
+                pagesDownloaded++;
+
+                // Dodaj linkove za sledeće posete
+                var links = doc.DocumentNode.SelectNodes("//a[@href]")
+                    ?.Select(a => a.GetAttributeValue("href", ""))
+                    .Where(h => h.StartsWith("/wiki/") && !h.Contains(":"))
+                    .Select(h => "https://sh.wikipedia.org" + h)
+                    .Distinct()
+                    .Take(15)
+                    .ToList();
+
+                if (links != null)
+                {
+                    var dodato = 0;
+                    foreach (var link in links)
+                        if (!visited.Contains(link))
+                        {
+                            toVisit.Enqueue(link);
+                            dodato++;
+                        }
+
+                    Console.WriteLine($"Dodato {dodato} novih linkova ({toVisit.Count} u redu).");
                 }
             }
-
-            Console.WriteLine($"\nPreuzimanje završeno. Ukupno sačuvano {pagesDownloaded} stranica u folderu {dataDir}");
+            catch (Exception ex)
+            {
+                Console.WriteLine($" Greška pri obradi {url}: {ex.Message}");
+            }
         }
+
+        Console.WriteLine($"\nPreuzimanje završeno. Ukupno sačuvano {pagesDownloaded} stranica u folderu {dataDir}");
     }
 }

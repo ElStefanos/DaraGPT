@@ -7,361 +7,366 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
     <ItemGroup>
-      <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-      <PackageReference Include="OpenCL.Net" Version="2.2.9" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.12.4"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
+        <PackageReference Include="OpenCL.Net" Version="2.2.9"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="GPUKernel\Kernel.txt" />
-      <Content Include="GPUKernel\Kernel.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\20.000-milja-pod-morem-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\20.000-milja-pod-morem-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Carev-glasnik-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\Carev-glasnik-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Delfin-najbrzi-brod-na-svetu-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\Delfin-najbrzi-brod-na-svetu-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Djeca-kapetana-Granta-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\Djeca-kapetana-Granta-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\DNEVNIK-ADAMA-I-EVE-Mark-Twain.txt" />
-      <Content Include="Data\Knjige\TXT\DNEVNIK-ADAMA-I-EVE-Mark-Twain.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Dunavski-banditi-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\Dunavski-banditi-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Godina-kuge-Daniel-Defoe.txt" />
-      <Content Include="Data\Knjige\TXT\Godina-kuge-Daniel-Defoe.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Gospodar-svijeta-Jules-Verne.txt" />
-      <Content Include="Data\Knjige\TXT\Gospodar-svijeta-Jules-Verne.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Kapetan-Singlton-Daniel-Defoe.txt" />
-      <Content Include="Data\Knjige\TXT\Kapetan-Singlton-Daniel-Defoe.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Pustolovine-Toma-Sawyera-Mark-Twain.txt" />
-      <Content Include="Data\Knjige\TXT\Pustolovine-Toma-Sawyera-Mark-Twain.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Robinson-Kruso-Daniel-Defoe.txt" />
-      <Content Include="Data\Knjige\TXT\Robinson-Kruso-Daniel-Defoe.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\TXT\Tajanstveni-stranac-Mark-Twain.txt" />
-      <Content Include="Data\Knjige\TXT\Tajanstveni-stranac-Mark-Twain.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\PDF\placeholder" />
-      <Content Include="Data\Knjige\PDF\placeholder">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Knjige\ekstrakcija.py" />
-      <Content Include="Data\Knjige\ekstrakcija.py">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\SRT\placeholder" />
-      <Content Include="Data\Titlovi\SRT\placeholder">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\skripta.py" />
-      <Content Include="Data\Titlovi\skripta.py">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Play.Dirty.2025.720p.WEBRip.x264.AAC-[YTS.MX]_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Play.Dirty.2025.720p.WEBRip.x264.AAC-[YTS.MX]_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\S1E04 - Phantom Traveler.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\S1E04 - Phantom Traveler.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\SavingPrivateRyan_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\SavingPrivateRyan_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Sicario 2015 SrbSubs 720p BRRip - gixxer_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Sicario 2015 SrbSubs 720p BRRip - gixxer_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\supernatural.s01e01.hr.hdtv.xvid.nbs.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\supernatural.s01e01.hr.hdtv.xvid.nbs.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\supernatural.s01e02.hr.hdtv.xvid.nbs.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\supernatural.s01e02.hr.hdtv.xvid.nbs.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\supernatural.s01e04.hr.hdtv.xvid.nbs.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\supernatural.s01e04.hr.hdtv.xvid.nbs.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - S01E01 - Pilot.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - S01E01 - Pilot.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - S01E02 - Wendigo.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - S01E02 - Wendigo.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - S01E03 - Dead In The Water.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - S01E03 - Dead In The Water.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - 01x02 - Wendigo.720p.BluRay.x264-MACRO.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - 01x02 - Wendigo.720p.BluRay.x264-MACRO.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - 01x03 - Dead In The Water.720p.BluRay.x264-MACRO.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - 01x03 - Dead In The Water.720p.BluRay.x264-MACRO.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - 01x03 - Dead in the Water.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - 01x03 - Dead in the Water.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural - 01x04 - Phantom Traveler.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural - 01x04 - Phantom Traveler.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural S01E02 BrRip 480p x264 AAC NimitMak SilverRG.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural S01E02 BrRip 480p x264 AAC NimitMak SilverRG.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural S01E04 BrRip 480p x264 AAC NimitMak SilverRG-bos.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural S01E04 BrRip 480p x264 AAC NimitMak SilverRG-bos.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\Supernatural 01x04 - Phantom Traveler.SR_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\Supernatural 01x04 - Phantom Traveler.SR_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\The.Conjuring.Last.Rites.2025.720p.WEBRip.x264.AAC-[YTS.MX].lat_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\The.Conjuring.Last.Rites.2025.720p.WEBRip.x264.AAC-[YTS.MX].lat_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Titlovi\TXT\The Beast.2023.1080p.BluRay.x264.AAC5.1-[YTS.MX]_clean.txt" />
-      <Content Include="Data\Titlovi\TXT\The Beast.2023.1080p.BluRay.x264.AAC5.1-[YTS.MX]_clean.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\2012.txt" />
-      <Content Include="Data\Wikipedija\2012.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Andromeda__galaksija_.txt" />
-      <Content Include="Data\Wikipedija\Andromeda__galaksija_.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Antarktik.txt" />
-      <Content Include="Data\Wikipedija\Antarktik.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Autorsko_pravo.txt" />
-      <Content Include="Data\Wikipedija\Autorsko_pravo.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Duke_University.txt" />
-      <Content Include="Data\Wikipedija\Duke_University.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Enciklopedija.txt" />
-      <Content Include="Data\Wikipedija\Enciklopedija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Engleski.txt" />
-      <Content Include="Data\Wikipedija\Engleski.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Engleski_jezik.txt" />
-      <Content Include="Data\Wikipedija\Engleski_jezik.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Filozofija.txt" />
-      <Content Include="Data\Wikipedija\Filozofija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Free_Software_Foundation.txt" />
-      <Content Include="Data\Wikipedija\Free_Software_Foundation.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Frutiger_Aero.txt" />
-      <Content Include="Data\Wikipedija\Frutiger_Aero.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Generacija_Z.txt" />
-      <Content Include="Data\Wikipedija\Generacija_Z.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Glavna_strana.txt" />
-      <Content Include="Data\Wikipedija\Glavna_strana.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Glavna_stranica.txt" />
-      <Content Include="Data\Wikipedija\Glavna_stranica.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Gr_C4_8Dki_jezik.txt" />
-      <Content Include="Data\Wikipedija\Gr_C4_8Dki_jezik.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Internet.txt" />
-      <Content Include="Data\Wikipedija\Internet.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Internetska_enciklopedija.txt" />
-      <Content Include="Data\Wikipedija\Internetska_enciklopedija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Jezero.txt" />
-      <Content Include="Data\Wikipedija\Jezero.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Jezi_C4_8Dne_porodice_i_jezici.txt" />
-      <Content Include="Data\Wikipedija\Jezi_C4_8Dne_porodice_i_jezici.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Jezici_po_broju_govornika.txt" />
-      <Content Include="Data\Wikipedija\Jezici_po_broju_govornika.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Jimmy_Wales.txt" />
-      <Content Include="Data\Wikipedija\Jimmy_Wales.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Leksikografija.txt" />
-      <Content Include="Data\Wikipedija\Leksikografija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Leksikon.txt" />
-      <Content Include="Data\Wikipedija\Leksikon.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Licenca.txt" />
-      <Content Include="Data\Wikipedija\Licenca.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Me_C4_91unarodna_fonetska_abeceda.txt" />
-      <Content Include="Data\Wikipedija\Me_C4_91unarodna_fonetska_abeceda.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Mlije_C4_8Dni_put.txt" />
-      <Content Include="Data\Wikipedija\Mlije_C4_8Dni_put.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Monopol.txt" />
-      <Content Include="Data\Wikipedija\Monopol.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Mre_C5_BEno_mjesto.txt" />
-      <Content Include="Data\Wikipedija\Mre_C5_BEno_mjesto.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Mrtvo_more.txt" />
-      <Content Include="Data\Wikipedija\Mrtvo_more.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Neprofitna_organizacija.txt" />
-      <Content Include="Data\Wikipedija\Neprofitna_organizacija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Portmanteau.txt" />
-      <Content Include="Data\Wikipedija\Portmanteau.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Richard_Stallman.txt" />
-      <Content Include="Data\Wikipedija\Richard_Stallman.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Rje_C4_8Dnik.txt" />
-      <Content Include="Data\Wikipedija\Rje_C4_8Dnik.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Rukomet_na_Ljetnim_olimpijskim_igrama_2020___E2_80_93_mu_C5_A1karci.txt" />
-      <Content Include="Data\Wikipedija\Rukomet_na_Ljetnim_olimpijskim_igrama_2020___E2_80_93_mu_C5_A1karci.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Slobodni_sadr_C5_BEaj.txt" />
-      <Content Include="Data\Wikipedija\Slobodni_sadr_C5_BEaj.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Sook_Ching.txt" />
-      <Content Include="Data\Wikipedija\Sook_Ching.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Sovjetski_Savez.txt" />
-      <Content Include="Data\Wikipedija\Sovjetski_Savez.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Srpskohrvatski_jezik.txt" />
-      <Content Include="Data\Wikipedija\Srpskohrvatski_jezik.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Umetnost.txt" />
-      <Content Include="Data\Wikipedija\Umetnost.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Umjetni_C4_8Dko_djelo.txt" />
-      <Content Include="Data\Wikipedija\Umjetni_C4_8Dko_djelo.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Uniform_Resource_Locator.txt" />
-      <Content Include="Data\Wikipedija\Uniform_Resource_Locator.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Vi_C5_A1ejezi_C4_8Dnost.txt" />
-      <Content Include="Data\Wikipedija\Vi_C5_A1ejezi_C4_8Dnost.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Vlajko_Begovi_C4_87.txt" />
-      <Content Include="Data\Wikipedija\Vlajko_Begovi_C4_87.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Wayback_Machine.txt" />
-      <Content Include="Data\Wikipedija\Wayback_Machine.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Wiki.txt" />
-      <Content Include="Data\Wikipedija\Wiki.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Wikimedia_Foundation.txt" />
-      <Content Include="Data\Wikipedija\Wikimedia_Foundation.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Wikipedia.txt" />
-      <Content Include="Data\Wikipedija\Wikipedia.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Wikipedija.txt" />
-      <Content Include="Data\Wikipedija\Wikipedija.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Y2K__estetika_.txt" />
-      <Content Include="Data\Wikipedija\Y2K__estetika_.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Wikipedija\Zemlja.txt" />
-      <Content Include="Data\Wikipedija\Zemlja.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <None Remove="GPUKernel\Kernel.txt"/>
+        <Content Include="GPUKernel\Kernel.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\20.000-milja-pod-morem-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\20.000-milja-pod-morem-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Carev-glasnik-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\Carev-glasnik-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Delfin-najbrzi-brod-na-svetu-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\Delfin-najbrzi-brod-na-svetu-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Djeca-kapetana-Granta-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\Djeca-kapetana-Granta-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\DNEVNIK-ADAMA-I-EVE-Mark-Twain.txt"/>
+        <Content Include="Data\Knjige\TXT\DNEVNIK-ADAMA-I-EVE-Mark-Twain.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Dunavski-banditi-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\Dunavski-banditi-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Godina-kuge-Daniel-Defoe.txt"/>
+        <Content Include="Data\Knjige\TXT\Godina-kuge-Daniel-Defoe.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Gospodar-svijeta-Jules-Verne.txt"/>
+        <Content Include="Data\Knjige\TXT\Gospodar-svijeta-Jules-Verne.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Kapetan-Singlton-Daniel-Defoe.txt"/>
+        <Content Include="Data\Knjige\TXT\Kapetan-Singlton-Daniel-Defoe.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Pustolovine-Toma-Sawyera-Mark-Twain.txt"/>
+        <Content Include="Data\Knjige\TXT\Pustolovine-Toma-Sawyera-Mark-Twain.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Robinson-Kruso-Daniel-Defoe.txt"/>
+        <Content Include="Data\Knjige\TXT\Robinson-Kruso-Daniel-Defoe.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\TXT\Tajanstveni-stranac-Mark-Twain.txt"/>
+        <Content Include="Data\Knjige\TXT\Tajanstveni-stranac-Mark-Twain.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\PDF\placeholder"/>
+        <Content Include="Data\Knjige\PDF\placeholder">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Knjige\ekstrakcija.py"/>
+        <Content Include="Data\Knjige\ekstrakcija.py">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\SRT\placeholder"/>
+        <Content Include="Data\Titlovi\SRT\placeholder">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\skripta.py"/>
+        <Content Include="Data\Titlovi\skripta.py">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Play.Dirty.2025.720p.WEBRip.x264.AAC-[YTS.MX]_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Play.Dirty.2025.720p.WEBRip.x264.AAC-[YTS.MX]_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\S1E04 - Phantom Traveler.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\S1E04 - Phantom Traveler.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\SavingPrivateRyan_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\SavingPrivateRyan_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Sicario 2015 SrbSubs 720p BRRip - gixxer_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Sicario 2015 SrbSubs 720p BRRip - gixxer_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\supernatural.s01e01.hr.hdtv.xvid.nbs.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\supernatural.s01e01.hr.hdtv.xvid.nbs.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\supernatural.s01e02.hr.hdtv.xvid.nbs.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\supernatural.s01e02.hr.hdtv.xvid.nbs.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\supernatural.s01e04.hr.hdtv.xvid.nbs.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\supernatural.s01e04.hr.hdtv.xvid.nbs.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - S01E01 - Pilot.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - S01E01 - Pilot.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - S01E02 - Wendigo.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - S01E02 - Wendigo.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - S01E03 - Dead In The Water.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - S01E03 - Dead In The Water.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - 01x02 - Wendigo.720p.BluRay.x264-MACRO.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - 01x02 - Wendigo.720p.BluRay.x264-MACRO.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - 01x03 - Dead In The Water.720p.BluRay.x264-MACRO.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - 01x03 - Dead In The Water.720p.BluRay.x264-MACRO.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - 01x03 - Dead in the Water.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - 01x03 - Dead in the Water.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural - 01x04 - Phantom Traveler.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural - 01x04 - Phantom Traveler.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural S01E02 BrRip 480p x264 AAC NimitMak SilverRG.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural S01E02 BrRip 480p x264 AAC NimitMak SilverRG.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural S01E04 BrRip 480p x264 AAC NimitMak SilverRG-bos.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural S01E04 BrRip 480p x264 AAC NimitMak SilverRG-bos.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\Supernatural 01x04 - Phantom Traveler.SR_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\Supernatural 01x04 - Phantom Traveler.SR_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\The.Conjuring.Last.Rites.2025.720p.WEBRip.x264.AAC-[YTS.MX].lat_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\The.Conjuring.Last.Rites.2025.720p.WEBRip.x264.AAC-[YTS.MX].lat_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Titlovi\TXT\The Beast.2023.1080p.BluRay.x264.AAC5.1-[YTS.MX]_clean.txt"/>
+        <Content Include="Data\Titlovi\TXT\The Beast.2023.1080p.BluRay.x264.AAC5.1-[YTS.MX]_clean.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\2012.txt"/>
+        <Content Include="Data\Wikipedija\2012.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Andromeda__galaksija_.txt"/>
+        <Content Include="Data\Wikipedija\Andromeda__galaksija_.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Antarktik.txt"/>
+        <Content Include="Data\Wikipedija\Antarktik.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Autorsko_pravo.txt"/>
+        <Content Include="Data\Wikipedija\Autorsko_pravo.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Duke_University.txt"/>
+        <Content Include="Data\Wikipedija\Duke_University.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Enciklopedija.txt"/>
+        <Content Include="Data\Wikipedija\Enciklopedija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Engleski.txt"/>
+        <Content Include="Data\Wikipedija\Engleski.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Engleski_jezik.txt"/>
+        <Content Include="Data\Wikipedija\Engleski_jezik.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Filozofija.txt"/>
+        <Content Include="Data\Wikipedija\Filozofija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Free_Software_Foundation.txt"/>
+        <Content Include="Data\Wikipedija\Free_Software_Foundation.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Frutiger_Aero.txt"/>
+        <Content Include="Data\Wikipedija\Frutiger_Aero.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Generacija_Z.txt"/>
+        <Content Include="Data\Wikipedija\Generacija_Z.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Glavna_strana.txt"/>
+        <Content Include="Data\Wikipedija\Glavna_strana.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Glavna_stranica.txt"/>
+        <Content Include="Data\Wikipedija\Glavna_stranica.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Gr_C4_8Dki_jezik.txt"/>
+        <Content Include="Data\Wikipedija\Gr_C4_8Dki_jezik.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Internet.txt"/>
+        <Content Include="Data\Wikipedija\Internet.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Internetska_enciklopedija.txt"/>
+        <Content Include="Data\Wikipedija\Internetska_enciklopedija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Jezero.txt"/>
+        <Content Include="Data\Wikipedija\Jezero.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Jezi_C4_8Dne_porodice_i_jezici.txt"/>
+        <Content Include="Data\Wikipedija\Jezi_C4_8Dne_porodice_i_jezici.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Jezici_po_broju_govornika.txt"/>
+        <Content Include="Data\Wikipedija\Jezici_po_broju_govornika.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Jimmy_Wales.txt"/>
+        <Content Include="Data\Wikipedija\Jimmy_Wales.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Leksikografija.txt"/>
+        <Content Include="Data\Wikipedija\Leksikografija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Leksikon.txt"/>
+        <Content Include="Data\Wikipedija\Leksikon.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Licenca.txt"/>
+        <Content Include="Data\Wikipedija\Licenca.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Me_C4_91unarodna_fonetska_abeceda.txt"/>
+        <Content Include="Data\Wikipedija\Me_C4_91unarodna_fonetska_abeceda.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Mlije_C4_8Dni_put.txt"/>
+        <Content Include="Data\Wikipedija\Mlije_C4_8Dni_put.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Monopol.txt"/>
+        <Content Include="Data\Wikipedija\Monopol.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Mre_C5_BEno_mjesto.txt"/>
+        <Content Include="Data\Wikipedija\Mre_C5_BEno_mjesto.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Mrtvo_more.txt"/>
+        <Content Include="Data\Wikipedija\Mrtvo_more.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Neprofitna_organizacija.txt"/>
+        <Content Include="Data\Wikipedija\Neprofitna_organizacija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Portmanteau.txt"/>
+        <Content Include="Data\Wikipedija\Portmanteau.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Richard_Stallman.txt"/>
+        <Content Include="Data\Wikipedija\Richard_Stallman.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Rje_C4_8Dnik.txt"/>
+        <Content Include="Data\Wikipedija\Rje_C4_8Dnik.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Rukomet_na_Ljetnim_olimpijskim_igrama_2020___E2_80_93_mu_C5_A1karci.txt"/>
+        <Content Include="Data\Wikipedija\Rukomet_na_Ljetnim_olimpijskim_igrama_2020___E2_80_93_mu_C5_A1karci.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Slobodni_sadr_C5_BEaj.txt"/>
+        <Content Include="Data\Wikipedija\Slobodni_sadr_C5_BEaj.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Sook_Ching.txt"/>
+        <Content Include="Data\Wikipedija\Sook_Ching.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Sovjetski_Savez.txt"/>
+        <Content Include="Data\Wikipedija\Sovjetski_Savez.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Srpskohrvatski_jezik.txt"/>
+        <Content Include="Data\Wikipedija\Srpskohrvatski_jezik.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Umetnost.txt"/>
+        <Content Include="Data\Wikipedija\Umetnost.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Umjetni_C4_8Dko_djelo.txt"/>
+        <Content Include="Data\Wikipedija\Umjetni_C4_8Dko_djelo.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Uniform_Resource_Locator.txt"/>
+        <Content Include="Data\Wikipedija\Uniform_Resource_Locator.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Vi_C5_A1ejezi_C4_8Dnost.txt"/>
+        <Content Include="Data\Wikipedija\Vi_C5_A1ejezi_C4_8Dnost.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Vlajko_Begovi_C4_87.txt"/>
+        <Content Include="Data\Wikipedija\Vlajko_Begovi_C4_87.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Wayback_Machine.txt"/>
+        <Content Include="Data\Wikipedija\Wayback_Machine.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Wiki.txt"/>
+        <Content Include="Data\Wikipedija\Wiki.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Wikimedia_Foundation.txt"/>
+        <Content Include="Data\Wikipedija\Wikimedia_Foundation.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Wikipedia.txt"/>
+        <Content Include="Data\Wikipedija\Wikipedia.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Wikipedija.txt"/>
+        <Content Include="Data\Wikipedija\Wikipedija.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Y2K__estetika_.txt"/>
+        <Content Include="Data\Wikipedija\Y2K__estetika_.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Data\Wikipedija\Zemlja.txt"/>
+        <Content Include="Data\Wikipedija\Zemlja.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

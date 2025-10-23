@@ -1,105 +1,86 @@
-﻿using System;
+﻿using System.Diagnostics;
 using OpenCL.Net;
 
-namespace DaraGPT
+namespace DaraGPT;
+
+public class Trainer
 {
-    public class Trainer
+    private readonly TextDataset dataset;
+    private readonly GPTModel model;
+    private readonly Tokenizer tokenizer;
+
+    public Trainer(GPTModel model, Tokenizer tokenizer, TextDataset dataset)
     {
-        private readonly GPTModel model;
-        private readonly Tokenizer tokenizer;
-        private readonly TextDataset dataset;
+        this.model = model;
+        this.tokenizer = tokenizer;
+        this.dataset = dataset;
+    }
 
-        public Trainer(GPTModel model, Tokenizer tokenizer, TextDataset dataset)
+    public void Train(int epochs = 3)
+    {
+        Console.WriteLine("Trening u toku...");
+
+        var gpu = model != null ? model.cfg != null ? new GpuEngine(model.cfg.DevicePreference) : model.gpu : null;
+
+        if (gpu != null && gpu.Available)
+            Console.WriteLine($"GPU aktivan: {Cl.GetDeviceInfo(gpu.Device, DeviceInfo.Name, out _)}");
+        else
+            Console.WriteLine("GPU nije dostupan, koristi se CPU fallback.");
+
+        for (var e = 0; e < epochs; e++)
         {
-            this.model = model;
-            this.tokenizer = tokenizer;
-            this.dataset = dataset;
-        }
+            var batches = 0;
+            double epochLoss = 0;
 
-        public void Train(int epochs = 3)
-        {
-            Console.WriteLine("Trening u toku...");
-            
-            var gpu = model != null ? (model.cfg != null ? new GpuEngine(model.cfg.DevicePreference) : model.gpu) : null;
+            // Keširaj batch-eve jednom
+            var batchSize = 8; // možeš menjati
+            var batchesList = dataset.GetBatches(model.cfg.ContextSize, batchSize).ToList();
+            var totalBatches = batchesList.Count;
 
-            if (gpu != null && gpu.Available)
-                Console.WriteLine($"GPU aktivan: {Cl.GetDeviceInfo(gpu.Device, DeviceInfo.Name, out _)}");
-            else
-                Console.WriteLine("GPU nije dostupan, koristi se CPU fallback.");
+            Console.WriteLine($"\n[Epoch {e + 1}] Dataset spreman. Ukupno batch-eva: {totalBatches}");
 
-            for (int e = 0; e < epochs; e++)
+            var epochTimer = Stopwatch.StartNew();
+
+            foreach (var (inputs, targets) in batchesList)
             {
-                int batches = 0;
-                double epochLoss = 0;
+                batches++;
+                double batchLoss = 0;
 
-                // Keširaj batch-eve jednom
-                var batchesList = dataset.GetBatches(model.cfg.ContextSize).ToList();
-                int totalBatches = batchesList.Count;
-
-                Console.WriteLine($"\n[Epoch {e + 1}] Dataset spreman. Ukupno batch-eva: {totalBatches}");
-
-                var epochTimer = System.Diagnostics.Stopwatch.StartNew();
-
-                foreach (var (input, target) in batchesList)
+                for (var b = 0; b < inputs.Length; b++)
                 {
-                    batches++;
-                    int T = input.Length;
-                    int V = model.cfg.VocabSize;
+                    var input = inputs[b];
+                    var target = targets[b];
+                    var T = input.Length;
+                    var V = model.cfg.VocabSize;
 
-                    var hidden = model.ForwardHidden(input);        // (T x D)
-                    var logits = model.ProjectToVocab(hidden, T);   // (T x V)
+                    var hidden = model.ForwardHidden(input);
+                    var logits = model.ProjectToVocab(hidden, T);
+                    var probs = LinAlgCPU.SoftmaxRowwise(logits, T, V);
 
-                    // Softmax
-                    float[] probs = (gpu != null && gpu.Available)
-                        ? gpu.RowSoftmax(logits, T, V)
-                        : LinAlgCPU.SoftmaxRowwise(logits, T, V);
-
-                    // CE loss + gradLogits
                     var gradLogits = new float[probs.Length];
-                    double batchLoss = 0.0;
-
-                    for (int t = 0; t < T; t++)
+                    for (var t = 0; t < T; t++)
                     {
-                        int targetId = target[t];
-                        int row = t * V;
-                        
-                        if (targetId < 0 || targetId >= V)
-                        {
-                            // Ako token ne postoji u vokabularu, preskoči batch
-                            continue;
-                        }
-
-                        double pTrue = Math.Max(1e-12, probs[row + targetId]);
+                        var targetId = target[t];
+                        var row = t * V;
+                        var pTrue = Math.Max(1e-12, probs[row + targetId]);
                         batchLoss += -Math.Log(pTrue);
 
-                        for (int i = 0; i < V; i++) gradLogits[row + i] = probs[row + i];
+                        for (var i = 0; i < V; i++) gradLogits[row + i] = probs[row + i];
                         gradLogits[row + targetId] -= 1f;
                     }
 
-                    batchLoss /= Math.Max(1, T);
-                    epochLoss += batchLoss;
-
-                    // Backward: izlazni sloj
                     model.BackwardOnOutput(hidden, gradLogits, T, model.cfg.LearningRate);
-
-                    float gradSum = 0;
-                    for (int i = 0; i < gradLogits.Length; i++) gradSum += Math.Abs(gradLogits[i]);
-                    if (batches % 10 == 0) Console.WriteLine($"Grad sum: {gradSum}");
-                    
-                    // Backward: slojevi (minimalni demo backprop)
-                    for (int i = model.Layers.Count - 1; i >= 0; i--)
-                    {
-                        hidden = model.Layers[i].Backward(hidden, hidden, T, model.cfg.LearningRate);
-                    }
-
-                    Console.WriteLine($"Epoch {e + 1} | Batch {batches}/{totalBatches} | Loss {epochLoss / batches:F4}");
                 }
 
-                epochTimer.Stop();
-                Console.WriteLine($"Epoch {e + 1}/{epochs} završena. AvgLoss={epochLoss / Math.Max(1, batches):F4} | Trajanje: {epochTimer.Elapsed.TotalSeconds:F1}s");
+                epochLoss += batchLoss / Math.Max(1, inputs.Length);
+                Console.WriteLine($"Epoch {e + 1} | Batch {batches}/{totalBatches} | Loss {epochLoss / batches:F4}");
             }
 
-            Console.WriteLine("\nTrening završen.");
+            epochTimer.Stop();
+            Console.WriteLine(
+                $"Epoch {e + 1}/{epochs} završena. AvgLoss={epochLoss / Math.Max(1, batches):F4} | Trajanje: {epochTimer.Elapsed.TotalSeconds:F1}s");
         }
+
+        Console.WriteLine("\nTrening završen.");
     }
 }

@@ -1,9 +1,6 @@
-﻿using System.IO;
+﻿namespace DaraGPT;
 
-namespace DaraGPT
+public interface IBinaryLayer
 {
-    public interface IBinaryLayer
-    {
-        void WriteTo(BinaryWriter bw);
-    }
+    void WriteTo(BinaryWriter bw);
 }
