@@ -1,0 +1,163 @@
+﻿
+__kernel void Transpose(
+  const int Rows, const int Cols,
+  __global const float* X,
+  __global float* Y)
+{
+  int r = get_global_id(0);
+  int c = get_global_id(1);
+  if (r >= Rows || c >= Cols) return;
+  Y[c * Rows + r] = X[r * Cols + c];
+}
+
+__kernel void RowSoftmaxCEGrad(
+  const int Rows, const int Cols,
+  __global const float* Logits,
+  __global const int* Targets,
+  __global float* Probs,
+  __global float* Grad,
+  __global float* RowLoss)
+{
+  int r = get_global_id(0);
+  if (r >= Rows) return;
+  int baseIdx = r * Cols;
+
+  float maxv = -3.402823e38f;
+  for (int c = 0; c < Cols; ++c)
+  {
+    float v = Logits[baseIdx + c];
+    maxv = v > maxv ? v : maxv;
+  }
+
+  float sum = 0.0f;
+  for (int c = 0; c < Cols; ++c)
+  {
+    float e = exp(Logits[baseIdx + c] - maxv);
+    Probs[baseIdx + c] = e;
+    sum += e;
+  }
+
+  float inv = 1.0f / sum;
+  int tgt = Targets[r];
+
+  for (int c = 0; c < Cols; ++c)
+  {
+    float p = Probs[baseIdx + c] * inv;
+    Probs[baseIdx + c] = p;
+    Grad[baseIdx + c] = p - (c == tgt ? 1.0f : 0.0f);
+  }
+
+  float pTrue = Probs[baseIdx + tgt];
+  if (pTrue < 1e-12f) pTrue = 1e-12f;
+  RowLoss[r] = -log(pTrue);
+}
+
+__kernel void EmbeddingGather(
+  const int T, const int D, const int V,
+  __global const float* W,
+  __global const int* Tokens,
+  __global float* Out)
+{
+  int t = get_global_id(0);
+  int d = get_global_id(1);
+  if (t >= T || d >= D) return;
+  int tok = Tokens[t];
+  if (tok >= V) tok = V - 1;
+  Out[t * D + d] = W[d * V + tok];
+}
+
+__kernel void LinearGradW(
+  const int B, const int In, const int Out,
+  __global const float* X,
+  __global const float* GradOut,
+  __global float* GradW)
+{
+  int i = get_global_id(0);
+  int j = get_global_id(1);
+  if (i >= Out || j >= In) return;
+  float s = 0.0f;
+  for (int b = 0; b < B; ++b)
+    s += GradOut[b * Out + i] * X[b * In + j];
+  GradW[i * In + j] = s / (float)(B > 0 ? B : 1);
+}
+
+__kernel void LinearGradB(
+  const int B, const int Out,
+  __global const float* GradOut,
+  __global float* GradB)
+{
+  int i = get_global_id(0);
+  if (i >= Out) return;
+  float s = 0.0f;
+  for (int b = 0; b < B; ++b)
+    s += GradOut[b * Out + i];
+  GradB[i] = s / (float)(B > 0 ? B : 1);
+}
+
+__kernel void LinearGradInput(
+  const int B, const int In, const int Out,
+  __global const float* W,
+  __global const float* GradOut,
+  __global float* GradIn)
+{
+  int b = get_global_id(0);
+  int j = get_global_id(1);
+  if (b >= B || j >= In) return;
+  float s = 0.0f;
+  for (int i = 0; i < Out; ++i)
+    s += GradOut[b * Out + i] * W[i * In + j];
+  GradIn[b * In + j] = s;
+}
+
+__kernel void MatMulOptimized(
+  const int M, const int N, const int P,
+  __global const float* A,   // (M x N)
+  __global const float* B,   // (N x P)
+  __global float* C)         // (M x P)
+{
+  int r = get_global_id(0); // 0..M-1
+  int c = get_global_id(1); // 0..P-1
+  if (r >= M || c >= P) return;
+  float s = 0.0f;
+  for (int k = 0; k < N; ++k)
+    s += A[r * N + k] * B[k * P + c];
+  C[r * P + c] = s;
+}
+
+
+__kernel void RowSoftmaxOptimized(
+  const int rows, const int cols,
+  __global const float* X,
+  __global float* Out)
+{
+  int r = get_global_id(0);
+  if (r >= rows) return;
+  int baseIdx = r * cols;
+
+  float maxv = -3.402823e38f;
+  for (int c = 0; c < cols; ++c) {
+    float v = X[baseIdx + c];
+    maxv = v > maxv ? v : maxv;
+  }
+
+  float sum = 0.0f;
+  for (int c = 0; c < cols; ++c) {
+    float e = exp(X[baseIdx + c] - maxv);
+    Out[baseIdx + c] = e;
+    sum += e;
+  }
+
+  float inv = 1.0f / sum;
+  for (int c = 0; c < cols; ++c)
+    Out[baseIdx + c] *= inv;
+}
+
+// === Update težina – kompajlirano JEDNOM u BuildProgram ===
+__kernel void UpdateWeightsKernel(
+  __global float* W,
+  __global float* Grad,
+  float lr)
+{
+  int id = get_global_id(0);
+  W[id] = W[id] - lr * Grad[id];
+}

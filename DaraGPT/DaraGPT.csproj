@@ -13,4 +13,11 @@
       <PackageReference Include="OpenCL.Net" Version="2.2.9" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="GPUKernel\Kernel.txt" />
+      <Content Include="GPUKernel\Kernel.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
