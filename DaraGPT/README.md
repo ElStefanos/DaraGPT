@@ -67,7 +67,8 @@ Ipak, na ogromnim količinama rečenica može i dalje biti spora.
 
 ### `VocabSize`
 - Ukupan broj **tokena u vokabularu**.  
-- Ova vrednost dolazi direktno iz tokenizera (`Tokenizer` ili `TokenizerCPP`) i tokom treniranja se postavlja automatski nema potrebe menjati ovu vrednost.  
+- Ova vrednost se koristi pri treningu da odredi koliki je vokabular za `Tokenizer`.
+- Ova vrednost dolazi direktno iz tokenizera (`Tokenizer` ili `TokenizerCPP`).  
 - Sa `VocabSize = 30200`, model može da prepozna oko 30.000 različitih kombinacija reči, delova reči i simbola.  
 - Preveliki vokabular usporava model, ali previše mali ograničava razumevanje jezika.  
 - Idealno je zadržati između `20.000–60.000` tokena za srpski jezik.

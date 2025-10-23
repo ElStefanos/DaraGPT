@@ -88,7 +88,7 @@ namespace DaraGPT
             {
                 var allTexts = Directory.GetFiles("Data", "*.txt", SearchOption.AllDirectories)
                     .Select(File.ReadAllText);
-                tokenizer.TrainBPE(allTexts, vocabTarget: 150000);
+                tokenizer.TrainBPE(allTexts, vocabTarget: cfg.VocabSize);
                 tokenizer.Save(tokenizerPath);
             }
             else

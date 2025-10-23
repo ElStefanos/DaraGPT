@@ -34,7 +34,7 @@ namespace DaraGPT
             return id;
         }
         
-        public void TrainBPE(IEnumerable<string> texts, int vocabTarget = 150000)
+        public void TrainBPE(IEnumerable<string> texts, int vocabTarget = 30000)
         {
             Console.WriteLine("Treniram BPE tokenizator...");
             
