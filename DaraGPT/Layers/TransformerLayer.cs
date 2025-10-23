@@ -30,7 +30,7 @@ namespace DaraGPT
 
         public float[] Forward(float[] x, int seqLen)
         {
-            // === 1. LayerNorm pre attention-a ===
+            //1. LayerNorm pre attention-a
             var norm1 = ln1.Forward(x, seqLen);
 
             var q = Wq.Forward(norm1, seqLen, gpu);
@@ -48,7 +48,7 @@ namespace DaraGPT
                 ? gpu.MatMul(q, kT, seqLen, DModel, seqLen)
                 : LinAlgCPU.MatMul(q, kT, seqLen, DModel, seqLen);
 
-            // 🔹 Skaliranje po d_model
+            // Skaliranje po d_model
             float scale = 1.0f / MathF.Sqrt(DModel);
             for (int i = 0; i < scores.Length; i++)
                 scores[i] *= scale;
@@ -66,17 +66,17 @@ namespace DaraGPT
             // Prolaz kroz linearni izlazni sloj
             var projected = Wo.Forward(outVec, seqLen, gpu);
 
-            // 🔹 Dropout (10%)
+            // Dropout (10%)
             for (int i = 0; i < projected.Length; i++)
                 if (Utils.RandFloat() < 0.1f)
                     projected[i] = 0;
 
-            // 🔹 Residual scaling 0.9
+            // Residual scaling 0.9
             var resid1 = new float[projected.Length];
             for (int i = 0; i < resid1.Length; i++)
                 resid1[i] = x[i] + 0.9f * projected[i];
 
-            // === 2. LayerNorm pre MLP-a ===
+            // 2. LayerNorm pre MLP-a ===
             var norm2 = ln2.Forward(resid1, seqLen);
 
             // MLP blok
@@ -85,12 +85,12 @@ namespace DaraGPT
                 hid[i] = Activations.Gelu(hid[i]);
             var mlpOut = MLP2.Forward(hid, seqLen, gpu);
 
-            // 🔹 Dropout u MLP izlazu
+            // Dropout u MLP izlazu
             for (int i = 0; i < mlpOut.Length; i++)
                 if (Utils.RandFloat() < 0.1f)
                     mlpOut[i] = 0;
 
-            // 🔹 Final residual skip sa scalingom
+            // Final residual skip sa scalingom
             var final = new float[mlpOut.Length];
             for (int i = 0; i < final.Length; i++)
                 final[i] = resid1[i] + 0.9f * mlpOut[i];

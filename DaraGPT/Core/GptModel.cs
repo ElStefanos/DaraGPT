@@ -36,7 +36,7 @@ namespace DaraGPT
             OutputProjection = new Linear(cfg.DModel, cfg.VocabSize);
         }
 
-        // === Forward: samo skrivena stanja (neizmenjeno) ===
+        //Forward: samo skrivena stanja
         public float[] ForwardHidden(int[] tokens)
         {
             int seq = tokens.Length;
@@ -62,7 +62,7 @@ namespace DaraGPT
         public float[] ForwardTokens(int[] tokens) =>
             ProjectToVocab(ForwardHidden(tokens), tokens.Length);
 
-        // === Backward na izlazu (neizmenjeno) ===
+        //Backward na izlazu
         public float[] BackwardOnOutput(float[] hidden, float[] gradLogits, int seq, float lr)
         {
             int dModel = cfg.DModel;
@@ -114,8 +114,7 @@ namespace DaraGPT
 
             return gradIn;
         }
-
-        // === BINARNO ČUVANJE ===
+        
         public void Save(string baseDir)
         {
             Directory.CreateDirectory(baseDir);
@@ -127,16 +126,13 @@ namespace DaraGPT
             // Header
             bw.Write(MAGIC);
             bw.Write(VERSION);
-
-            // Config
+            
             cfg.WriteTo(bw);
 
             // Embeddings i Output proj
             WriteLinear(bw, TokenEmbeddings);
             WriteLinear(bw, OutputProjection);
-
-            // Layers:
-            // Ako nemaš binarni API na TransformerLayer, snimi kao “ugnježđeni JSON blok” po sloju.
+            
             bw.Write(Layers.Count);
             for (int i = 0; i < Layers.Count; i++)
             {
@@ -145,13 +141,13 @@ namespace DaraGPT
             }
 
             bw.Flush();
-            Console.WriteLine($"💾 Model sačuvan u: {path}");
+            Console.WriteLine($"Model sačuvan u: {path}");
         }
 
-        // === BINARNO UČITAVANJE (sa back-compat za .json) ===
+        //BINARNO UČITAVANJE (sa back-compat za .json)
         public static GPTModel Load(string path)
         {
-            // Back-compat: ako ti proslede folder ili .json, pokrij i to
+            // Back-compat: ako se prosledi folder ili .json
             if (Directory.Exists(path))
             {
                 string bin = Path.Combine(path, "model.bin");
@@ -187,20 +183,20 @@ namespace DaraGPT
             model.Layers.Clear();
             for (int i = 0; i < nLayers; i++)
             {
-                // Učitavamo sloj iz JSON bloka (kompaktan, ali unutar binarnog kontejnera)
+                // Učitavamo sloj iz JSON bloka (ali unutar binarnog kontejnera)
                 string layerJson = br.ReadString();
                 var layer = JsonConvert.DeserializeObject<TransformerLayer>(layerJson);
                 if (layer == null)
                     throw new InvalidDataException($"Neuspelo učitavanje sloja {i} iz JSON bloka.");
-                // Ako tvoja klasa ima polje/propertije za GPU, pokušaj da setuješ:
+
                 try
                 {
-                    // reflection optional
                     var pi = typeof(TransformerLayer).GetProperty("gpu") ??
                              typeof(TransformerLayer).GetProperty("Gpu") ??
                              typeof(TransformerLayer).GetField("gpu")?.FieldType.GetProperty("gpu");
                     // fallback: ako nema, ignoriši; sloj ionako ne koristi GPU direktno u forward-u
                 }
+                
                 catch { /* ignore */ }
                 model.Layers.Add(layer);
             }
@@ -209,7 +205,7 @@ namespace DaraGPT
             return model;
         }
 
-        // === Back-compat loader za stari JSON ===
+        //Back-compat loader za stari JSON
         private static GPTModel LoadJson(string jsonPath)
         {
             var json = File.ReadAllText(jsonPath);
@@ -234,7 +230,7 @@ namespace DaraGPT
             return model;
         }
 
-        // === HELPERI (lokalni, samo za ovaj fajl) ===
+        // HELPERI (lokalni, samo za ovaj fajl)
         private static void WriteLinear(BinaryWriter bw, Linear lin)
         {
             bw.Write(lin.In);

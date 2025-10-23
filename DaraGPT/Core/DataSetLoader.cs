@@ -10,8 +10,7 @@ namespace DaraGPT
         private readonly string? dataDir;
         private readonly Tokenizer tokenizer;
         public List<int[]> Sequences { get; set; } = new List<int[]>();
-
-        // Za lokalne fajlove
+        
         public TextDataset(string dataDir, Tokenizer tokenizer)
         {
             this.dataDir = dataDir;
@@ -34,15 +33,13 @@ namespace DaraGPT
                 if (tokens.Length > 1) Sequences.Add(tokens);
             }
         }
-
-        // Minimalno: samo dodaj celu sekvencu tokena; seckanje radi GetBatches
+        
         public void AddDataFromTokens(int[] tokens)
         {
             if (tokens != null && tokens.Length > 1)
                 Sequences.Add(tokens);
         }
-
-        // Ako želiš unapred da isečeš, možeš opcioni parametar:
+        
         public void AddDataFromTokens(int[] tokens, int contextSize, bool preSlice)
         {
             if (!preSlice)
@@ -64,15 +61,15 @@ namespace DaraGPT
 
         public IEnumerable<(int[], int[])> GetBatches(int contextSize)
         {
-            // Spoji sve sekvence u jedan niz
+            //Spoji sve sekvence u jedan niz
             var all = new List<int>();
             foreach (var seq in Sequences)
             {
                 all.AddRange(seq);
-                all.Add(0); // opciono dodaj <EOS> (ako 0 = <PAD> / <EOS>)
+                all.Add(0);
             }
 
-            // 2Pravi batcheve globalno
+            //Pravi batcheve globalno
             for (int i = 0; i < all.Count - 1; i += contextSize)
             {
                 int len = Math.Min(contextSize, all.Count - 1 - i);

@@ -6,12 +6,12 @@ namespace DaraGPT
     {
         public int DModel { get; set; } = 1024;
         public int NumLayers { get; set; } = 8;
-        public int ContextSize { get; set; } = 500;
+        public int ContextSize { get; set; } = 1024;
         public int VocabSize { get; set; } = 30000;
         public float LearningRate { get; set; } = 1e-4f;
         public string CheckpointDir { get; set; } = "checkpoints";
 
-        public string DevicePreference { get; set; } = "AMD"; // "NVIDIA", "INTEL", "CPU"
+        public string DevicePreference { get; set; } = "AMD"; // "NVIDIA", "INTEL"
 
         internal void WriteTo(BinaryWriter bw)
         {

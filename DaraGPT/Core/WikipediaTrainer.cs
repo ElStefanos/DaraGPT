@@ -32,7 +32,7 @@ namespace DaraGPT
             string dataDir = Path.Combine(Directory.GetCurrentDirectory(), "Data");
             Directory.CreateDirectory(dataDir);
 
-            Console.WriteLine($"📥 Počinjem preuzimanje Wikipedia stranica (do {maxPages})...");
+            Console.WriteLine($"Počinjem preuzimanje Wikipedia stranica (do {maxPages})...");
 
             while (toVisit.Count > 0 && pagesDownloaded < maxPages)
             {
@@ -104,11 +104,11 @@ namespace DaraGPT
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"⚠️ Greška pri obradi {url}: {ex.Message}");
+                    Console.WriteLine($" Greška pri obradi {url}: {ex.Message}");
                 }
             }
 
-            Console.WriteLine($"\n✅ Preuzimanje završeno. Ukupno sačuvano {pagesDownloaded} stranica u folderu {dataDir}");
+            Console.WriteLine($"\nPreuzimanje završeno. Ukupno sačuvano {pagesDownloaded} stranica u folderu {dataDir}");
         }
     }
 }

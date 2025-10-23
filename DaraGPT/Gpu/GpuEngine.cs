@@ -54,7 +54,7 @@ namespace DaraGPT
 
         private void BuildProgram()
         {
-            // Svi potrebni kerneli na jednom mestu – uključujući MatMulOptimized, RowSoftmaxOptimized i UpdateWeightsKernel
+            // Svi potrebni kerneli
             string src = File.ReadAllText("./GPUKernel/Kernel.txt");
 
             try

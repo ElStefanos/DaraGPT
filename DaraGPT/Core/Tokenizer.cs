@@ -33,14 +33,15 @@ namespace DaraGPT
             IdToToken[id] = token;
             return id;
         }
-
-        // trenira BPE vokabular iz korpusa (npr. Wikipedia)
+        
         public void TrainBPE(IEnumerable<string> texts, int vocabTarget = 150000)
         {
             Console.WriteLine("Treniram BPE tokenizator...");
-
-            // razdvoji sve tekstove u liste karaktera
+            
             var words = new List<List<string>>();
+            
+            Console.WriteLine($"Pronadjeno: {words.Count().ToString()}");
+            
             foreach (var text in texts)
             {
                 foreach (var word in text.Split(' ', StringSplitOptions.RemoveEmptyEntries))
@@ -153,7 +154,6 @@ namespace DaraGPT
         // sačuvaj i merges
         public void Save(string path)
         {
-            // Forsiraj .tokbin ekstenziju i smislen izlazni put
             var dir = Path.GetDirectoryName(path);
             var nameNoExt = Path.GetFileNameWithoutExtension(path);
             if (string.IsNullOrWhiteSpace(nameNoExt)) nameNoExt = "tokenizer";
@@ -177,7 +177,7 @@ namespace DaraGPT
                 bw.Write(kv.Value);
             }
 
-            // IdToToken (redundantno ali zgodno za brz decode)
+            //(redundantno ali zgodno za brz decode)
             bw.Write(IdToToken.Count);
             foreach (var kv in IdToToken)
             {
