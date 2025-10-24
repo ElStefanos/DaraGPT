@@ -1,112 +1,132 @@
-# DaraGPT — Projekat
+# Due to lack of System resources this model is temporary halted in development. I've hit the point where optimisation doesn't help anymore. These are the limitations of OpenCL and my hardware that unfortunately I have to use.
 
-Projekat je razvijen u **C# jeziku**, i koristi **OpenCL** za hardversku akceleraciju treninga.  
-Cilj je da omogući lokalno treniranje jednostavnih jezičkih modela na srpskom jeziku (latinica/ćirilica) bez eksternih biblioteka poput PyTorch-a ili TensorFlow-a.
+# DaraGPT
 
----
-
-## Kako funkcioniše
-
-- Podaci za trening nalaze se u direktorijumu **`data/`**.  
-- Podaci se mogu menjati. Mogu biti bilo kog izvora dok god je `tekstualnog tipa`.
-- Svi fajlovi moraju biti **čisti `.txt` fajlovi** – bez metapodataka, oznaka (`<i>`, `<b>` itd.) i nepotrebnih simbola.  
-- Za pripremu podataka koristi **Python skripte** za:
-  - **čišćenje** (`cleaning`),  
-  - **ekstrakciju** (`extraction`),  
-  - i **formatiranje** (`formatting`) tekstova.
+**DaraGPT** is an experimental GPT-style language model written entirely in **C#** with **OpenCL acceleration**.  
+It is designed for local, privacy-preserving training and experimentation on personal hardware, without relying on cloud resources.  
+The system supports tokenization, model training, fine-tuning, and inference through a modular and transparent architecture.
 
 ---
 
-## Tokenizacija
+## Key Features
 
-Ako je dataset veći od **2 MB**, preporučuje se korišćenje **`TokenizerCPP`** alata.  
-To je brža verzija ugrađenog tokenizera, napisana u **C++**, i radi **3–5x brže** od C# implementacije.  
-Ipak, na ogromnim količinama rečenica može i dalje biti spora.
+- Full **from-scratch training** on local text datasets/
+- **GPU acceleration** using OpenCL (Intel, AMD, and NVIDIA compatible)
+- **BPE tokenizer** with binary storage format (`.tokbin`)
+- Modular **Transformer architecture** with configurable depth and heads
+- **Parallel training** per file, each producing an independent sub-model `TODO`
+- **Automatic model merging** (averaged weights) `TODO`
+- Optional **fine-tuning** phase on combined datasets `TODO`
+- **Checkpointing system** for training resumption `partially implemented`
+- **CPU/GPU fallback** (runs even without a GPU (NOT RECOMMENDED)) 
+- Supports **dynamic context size** (typically 256–1024 tokens)  `TODO`
 
 ---
 
-## Parametri konfiguracije (`config.json`)
+## Project Structure
+
+DaraGPT/ <br>
+├── Data/ -> This is where tha data is being pulled from <br>
+├── GPUKernels/ # OpenCL kernel source files <br>
+├── Model/<ModelName_x>/ -> Stored <name>.(.tokbin,.seqbin,.modbin, .epmodbin (optional) <br>
+├── FinalModels/ -> Merged and fine-tuned models <br>
+
+## Configuration
+
+Example `Config/config.json` file:
 
 ```json
 {
-  "DModel": 128,
-  "NumLayers": 4,
-  "ContextSize": 1024,
-  "VocabSize": 30200,
-  "LearningRate": 0.0015,
-  "CheckpointDir": "checkpoints",
+  "ModelName": "DaraGPT",
+  "ModelSavePath": "./Model/",
+  "DataPath": "./Data/",
+  "DModel": 192,
+  "Head": 8,
+  "Layers": 6,
+  "ContextSize": 512,
+  "VocabSize": 5000,
+  "LearningRate": 0.0025,
   "DevicePreference": "INTEL"
 }
 ```
+## Training Workflow
+### 1. Dataset Preparation
 
----
+Place text files into the Data/ directory.
+Subdirectories are supported (e.g., /Books, /Wiki, /Subtitles, /News).
 
-### `DModel`
-- Predstavlja **dimenziju modela**, tj. broj neuronskih veza u svakom sloju.  
-- Veći broj znači složeniji model koji bolje razume obrasce u jeziku, ali troši više memorije i vremena.  
-- Sa `DModel = 128`, model je kompaktan i idealan za eksperimentisanje ili kraće treninge.  
-- Za ozbiljniji trening koristi `256–512`, uz uslov da GPU ima dovoljno VRAM-a.
+### 2. Tokenization
+The tokenizer produces a .tokbin file used across all model training.
+The tokenizer iz BPE based.
 
----
+### 4. File-Based Training
+Each dataset file is trained independently, creating separate models. (Implemented but is meant to be used with parallel training)
 
-### `NumLayers`
-- Broj **transformer slojeva** u modelu.  
-- Svaki sloj se sastoji od **self-attention** i **feed-forward** delova.  
-- Sa `NumLayers = 4`, model ima četiri sloja dubine — dovoljno za razumevanje osnovne strukture rečenica.  
-- Veći broj slojeva (8, 12 ili više) povećava sposobnost razumevanja konteksta, ali i vreme treninga.
+### 5. Parallel Training - TODO
 
----
+Run multiple trainers in parallel to fully utilize GPU resources.
 
-### `ContextSize`
-- Broj **tokena** (delova reči) koje model istovremeno posmatra u kontekstu.  
-- Veći `ContextSize` = bolji kontekst, ali veće zauzeće RAM/VRAM memorije.  
-- `ContextSize = 1024` znači da model vidi do 1024 tokena odjednom, što je vrlo dobra vrednost za tekstove dužine nekoliko rečenica ili paragrafa.  
-- Ako koristiš GPU sa manje memorije, smanji vrednost na `512` ili `256`.
+### 6. Model Merging - TODO
 
----
+After all sub-models are trained, merge them into a single unified model.
 
-### `VocabSize`
-- Ukupan broj **tokena u vokabularu**.  
-- Ova vrednost dolazi direktno iz tokenizera (`Tokenizer` ili `TokenizerCPP`) i tokom treniranja se postavlja automatski nema potrebe menjati ovu vrednost.  
-- Sa `VocabSize = 30200`, model može da prepozna oko 30.000 različitih kombinacija reči, delova reči i simbola.  
-- Preveliki vokabular usporava model, ali previše mali ograničava razumevanje jezika.  
-- Idealno je zadržati između `20.000–60.000` tokena za srpski jezik.
+### 7. Fine-tuning (optional) - TODO
+Fine-tune the merged model on a representative corpus.
 
----
+## Chatting
 
-### `LearningRate`
-- Definiše **brzinu učenja** modela — koliko se težine menjaju nakon svake iteracije.  
-- Sa `LearningRate = 0.0015`, model uči umerenim tempom: dovoljno brzo da se vidi napredak, ali ne prebrzo da bi došlo do nestabilnosti.  
-- Ako `loss`:
-  - **skače** → smanji `LearningRate`  
-  - **sporo opada** → blago ga povećaj  
-- Optimalan `loss` po završetku epohe obično je između **0.5 i 0.7** Ali na velikim modelima moze biti i viši.
----
+Ability to run interactive inference with the trained model.
+HTTP server will be implemented in the future.
 
-### `CheckpointDir`
-- Direktorijum gde se čuvaju **fajlovi modela i tokena** tokom treninga.  
-- Primer: `checkpoints/model.bin`  
-- Checkpoint sadrži težine modela i stanje tokenizera — omogućava da nastaviš trening od tačke gde je prethodni prekinut. **NOTE**: Nastavak treninga još nije implementiran.
+## Performance
 
----
+### *NOTE: This was sampled on avarage file size of a 125kb and avarage time on really slow systems.*
 
-### `DevicePreference`
-- Definiše koji uređaj će se koristiti za **hardversku akceleraciju** (OpenCL backend).  
-- Moguće vrednosti:
-  - `"INTEL"`
-  - `"AMD"`
-  - `"NVIDIA"`
-  - CPU (fallback ako GPU nije dostupan)  
-- Na GPU-u, čak i integrisanom, trening može biti i do **150x brži** nego na CPU-u.  
-- Preporuka: uvek koristi GPU koji ima najviše dostupne memorije.
+| GPU / CPU                  | Context | dModel | Layers | VRAM Usage | Training Speed           |
+| -------------------------- | ------- | ------ | ------ | ---------- | ------------------------ |
+| Intel Iris Xe (integrated) | 256     | 192    | 6      | ~0.8 GB    | ~2.5–4 min/MB (parallel) |
+| AMD R9 380 (2gb)               | 512     | 256    | 8      | ~1 GB    | ~1.2 min/MB              |
 
----
 
-## Saveti za optimalan rad
+## File formats
 
-- Za testiranje koristi **manji dataset** (npr. 1–2 MB).  
-- Tokom dužeg treninga, prati `loss` i `gradient sum` — stabilnost znači dobar learning rate.  
-- Ako koristiš C# tokenizator, za veće korpuse pokreni `TokenizerCPP` pre treninga.  
-- Ako koristiš samo CPU, smanji `ContextSize` i `NumLayers` da bi izbegao preopterećenje memorije.
+| Extension | Description                                |
+| --------- | ------------------------------------------ |
+| `.tokbin` | Binary tokenizer file (token ↔ ID mapping) |
+| `.seqbin` | Optional sequence data for checkpoints     |
+| `.modbin`    | Model weights                              |
+| `.json`   | Configuration file                         |
 
----
+## Feedback and Fine-Tuning Loop (Planned)
+
+DaraGPT includes a planned reinforcement component where users can rate responses (positive or negative).
+These ratings are stored in a local SQLite database.
+
+# Roadmap
+
+
+| Phase                       | Status      | Description                            |
+| --------------------------- | ----------- | -------------------------------------- |
+| Core architecture           | Complete    | Model, tokenizer, GPU backend          |
+| Parallel training & merging | Partially complete    | Multi-file training and merge system   |
+| Fine-tuning module          | Planned | Manual and automated fine-tune support |
+| Feedback-based learning     | Planned     | RLHF-style reward optimization         |
+| Monitoring GUI              | Planned     | Real-time epoch/loss visualization     |
+| Model packaging             | Planned     | Export and deployment tools            |
+
+# Notes
+
+**The project is for educational and research purposes only.
+
+Performance varies depending on GPU driver and OpenCL implementation.
+
+Tokenizer and model formats are custom and not compatible with OpenAI or Hugging Face models.
+
+Training and inference are fully offline.**
+
+# License
+
+This project is open for research and personal use.
+Author: Stefan Crkvenjakov
+
+
